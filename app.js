@@ -24,17 +24,21 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", 'https://js.stripe.com', "'unsafe-inline'"],
-    frameSrc: ["'self'", 'https://js.stripe.com'],
-    connectSrc: ["'self'", 'https://api.stripe.com'],
-    imgSrc: ["'self'", 'data:', 'https://*.tile.openstreetmap.org'],
-    styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-    fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-  },
-}));
+// ─── SECURITY: CSP (allows Leaflet + OpenStreetMap + Stripe) ─────────────────
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc:  ["'self'", 'https://unpkg.com', 'https://js.stripe.com', "'unsafe-inline'"],
+      workerSrc:  ["'self'", 'blob:'],
+      frameSrc:   ["'self'", 'https://js.stripe.com'],
+      connectSrc: ["'self'", 'https://api.stripe.com', 'https://*.openstreetmap.org'],
+      imgSrc:     ["'self'", 'data:', 'blob:', 'https://*.tile.openstreetmap.org', 'https://unpkg.com'],
+      styleSrc:   ["'self'", 'https://fonts.googleapis.com', 'https://unpkg.com', "'unsafe-inline'"],
+      fontSrc:    ["'self'", 'https://fonts.gstatic.com', 'https://unpkg.com'],
+    },
+  })
+);
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
