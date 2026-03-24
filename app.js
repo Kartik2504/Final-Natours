@@ -36,6 +36,7 @@ app.use(
       imgSrc:     ["'self'", 'data:', 'blob:', 'https://*.tile.openstreetmap.org', 'https://unpkg.com'],
       styleSrc:   ["'self'", 'https://fonts.googleapis.com', 'https://unpkg.com', "'unsafe-inline'"],
       fontSrc:    ["'self'", 'https://fonts.gstatic.com', 'https://unpkg.com'],
+      upgradeInsecureRequests: null
     },
   })
 );
